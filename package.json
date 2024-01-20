@@ -1,0 +1,35 @@
+{
+  "name": "vudka-shop-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "NODE_ENV=production node ./server.js",
+    "dev": "NODE_ENV=development nodemon ./server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/msselizabeth/vudka.shop-backend.git"
+  },
+  "author": "Elizabeth Sheremet",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/msselizabeth/vudka.shop-backend/issues"
+  },
+  "homepage": "https://github.com/msselizabeth/vudka.shop-backend.git#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "joi": "^17.11.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^7.4.2",
+    "nanoid": "^3.3.4",
+    "nodemailer": "^6.9.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
