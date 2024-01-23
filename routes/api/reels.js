@@ -4,7 +4,7 @@ const router = express.Router();
 
 const ctrl = require("../../controllers");
 
-router.get("/", ctrl.getRods);
+router.get("/", ctrl.getReels);
 router.get("/same", ctrl.getSameReels);
 router.get("/:reelId", ctrl.getOneReel);
 
