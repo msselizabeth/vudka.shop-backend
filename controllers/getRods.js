@@ -6,7 +6,6 @@ const getRods = async (req, res) => {
   const skip = (page - 1) * limit;
   const totalCount = await Rod.countDocuments();
   const totalPages = Math.ceil(totalCount / limit);
-// purpose: query;
   const rods = await Rod.find({ purpose: query }, "", { skip, limit });
   const result = rods.map((rod) => ({
     _id: rod._id,
