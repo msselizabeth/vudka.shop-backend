@@ -1,11 +1,10 @@
-// controllers/authController.js
+
 const { User } = require("../models/user");
 const path = require("path");
 
 const confirmEmail = async (req, res) => {
   const { code } = req.params;
 
-  // Найти пользователя по токену
   const user = await User.findOneAndUpdate(
     { verificationCode: code, verify: false },
     { $set: { verify: true, verificationCode: null } }

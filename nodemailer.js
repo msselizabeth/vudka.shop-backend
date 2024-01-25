@@ -8,18 +8,18 @@ const transporter = nodemailer.createTransport({
   port: 465,
   secure: true,
   auth: {
-    user: "gastroguide@ukr.net",
+    user: "vudka.shop@ukr.net",
     pass: META_PASSWORD,
   },
 });
 
 async function registrationMail(emailMessage) {
-  // send mail with defined transport object
-  const info = await transporter.sendMail({
-    from: "gastroguide@ukr.net", // sender address
+
+   await transporter.sendMail({
+    from: "vudka.shop@ukr.net", // sender address
     to: emailMessage.to, // list of receivers
-    subject: "Verify email -- Gastro Guide", // Subject line
-    text: "Hello, dear user! Please, verificate", // plain text body
+    subject: "Лист підтвердження пошти -- Vudka.shop", // Subject line
+    text: "Вітаємо, шановний клієнте! Будь-ласка, підтвердіть свою пошту.", // plain text body
     html: emailMessage.html,
   });
 }

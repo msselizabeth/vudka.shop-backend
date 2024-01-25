@@ -2,9 +2,11 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 
+const authRouter = require("./routes/api/auth")
 const rodsRouter = require("./routes/api/rods")
 const siliconesRouter = require("./routes/api/silicones")
 const reelsRouter = require("./routes/api/reels")
+
 
 dotenv.config();
 
@@ -12,6 +14,7 @@ const app = express();
 
 app.use(cors());
 // app.use(express.json());
+app.use("/api/auth", authRouter);
 app.use("/api/rods", rodsRouter);
 app.use("/api/reels", reelsRouter);
 app.use("/api/silicones", siliconesRouter);

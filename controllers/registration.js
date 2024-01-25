@@ -3,11 +3,11 @@ const { HttpError } = require("../helpers");
 const bcrypt = require("bcrypt");
 const { registrationMail } = require("../nodemailer");
 const { nanoid } = require("nanoid");
-const { valid } = require("joi");
+
 
 
 const registration = async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, phone } = req.body;
     const user = await User.findOne({ email });  
     if (user) {
         throw HttpError(409, "Email has already been use.");
@@ -16,8 +16,16 @@ const registration = async (req, res) => {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(email);
     }
+    function isValidPhone(phone) {
+        const ukrainePhoneRegex =
+            /^(?:\+38)?(?:\(\d{3}\)|\d{3})(?:[ -]?)\d{2,3}(?:[ -]?)\d{2}(?:[ -]?)\d{2}$/;
+        return ukrainePhoneRegex.test(phone)
+    }
     if (!isValidEmail(email)) {
         throw HttpError(409, "Email is invalid.");
+    }
+    if (!isValidPhone(phone)) {
+        throw HttpError(409, "Phone is invalid.");
     }
 
 
@@ -25,15 +33,9 @@ const registration = async (req, res) => {
     const verificationCode = nanoid();
     const emailMessage = {
       to: email,
-      html: `
-            <p>Greetings, this is an automated email from Gastro Guide. Thank you for registering! Confirm your mail by clicking the link below.
-            If the links are not active (they do not glow in blue), then move the letter from the spam folder to the main inbox and try to click on the link again.</p>
-            <a target="_blank" href="https://gastro-guide-cb84aa2b2322.herokuapp.com/api/auth/verify/${verificationCode}">Confirm your email!</a>
-            <br/>
-            <br/>
-            <p>Вітаю, це автоматичний лист від Gastro Guide.  Дякую, за реєстрацію! Підтвердьте свою пошту натиснувши за допомогою посилання нижче. 
-            Якщо посилання не активні(не світяться синім кольором), то перемістіть лист з папки спам в основну скриньку та повторіть спробу натиснути на посиланн</p>
-            <a target="_blank" href="https://gastro-guide-cb84aa2b2322.herokuapp.com/api/auth/verify/${verificationCode}">Підтвердити пошту!</a>`,
+      html: ` <p>Вітаємо, це автоматичний лист від Vudka.shop.  Дякуємо, за реєстрацію! Підтвердьте свою пошту натиснувши за допомогою посилання нижче. 
+            Якщо посилання не активні(не світяться синім кольором), то перемістіть лист з папки спам в основну скриньку та повторіть спробу натиснути на посилання</p>
+            <a target="_blank" href="https://vudka-shop-backend.onrender.com/api/auth/verify/${verificationCode}">Підтвердити пошту!</a>`,
     };
     const newUser = await User.create({ ...req.body, password: hashPassword, verificationCode }); 
    
@@ -45,20 +47,6 @@ const registration = async (req, res) => {
     })
 }
 
-// const registrationEN = async (req, res) => {
-//   const { email, password } = req.body;
-//   const user = await User.findOne({ email });
-//   if (user) {
-//     throw HttpError(409, "Email has already been use.");
-//   }
-
-//   const hashPassword = await bcrypt.hash(password, 10);
-//   const newUser = await User.create({ ...req.body, password: hashPassword });
-//   res.status(201).json({
-//     email: newUser.email,
-//     name: newUser.userName,
-//   });
-// };
 
 module.exports = {
     registration,
