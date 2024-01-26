@@ -13,9 +13,28 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-async function registrationMail(emailMessage) {
+async function orderMail(emailMessage) {
 
    await transporter.sendMail({
+    from: "vudka.shop@ukr.net", // sender address
+    to: emailMessage.to, // list of receivers
+    subject: "Лист підтвердження замовлення -- Vudka.shop", // Subject line
+    text: "Вітаємо, шановний клієнте!", // plain text body
+    html: emailMessage.html,
+  });
+}
+
+async function orderManagerMail(emailMessage) {
+  await transporter.sendMail({
+    from: "vudka.shop@ukr.net", // sender address
+    to: "vudkashop@gmail.com", // list of receivers
+    subject: "Нове замовлення!!! Vudka.shop", // Subject line
+    html: emailMessage.html,
+  });
+}
+
+async function registrationMail(emailMessage) {
+  await transporter.sendMail({
     from: "vudka.shop@ukr.net", // sender address
     to: emailMessage.to, // list of receivers
     subject: "Лист підтвердження пошти -- Vudka.shop", // Subject line
@@ -35,6 +54,8 @@ async function supportMail(user, message) {
     
 }
 module.exports = {
-    registrationMail,
-    supportMail
-}
+  registrationMail,
+  supportMail,
+  orderMail,
+  orderManagerMail,
+};

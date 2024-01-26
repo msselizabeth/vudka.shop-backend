@@ -5,7 +5,6 @@ const { registrationMail } = require("../nodemailer");
 const { nanoid } = require("nanoid");
 
 
-
 const registration = async (req, res) => {
     const { email, password, phone } = req.body;
     const user = await User.findOne({ email });  
@@ -27,6 +26,9 @@ const registration = async (req, res) => {
     if (!isValidPhone(phone)) {
         throw HttpError(409, "Phone is invalid.");
     }
+    if (password.length < 6) {
+        throw HttpError(409, "Password is invalid.");
+    }
 
 
     const hashPassword = await bcrypt.hash(password, 10);
@@ -42,7 +44,7 @@ const registration = async (req, res) => {
     registrationMail(emailMessage).catch(console.error);
     res.status(201).json({      
             email: newUser.email,        
-             name: newUser.userName,
+             name: newUser.firstName,
             messages: "register succses"
     })
 }

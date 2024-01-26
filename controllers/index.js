@@ -13,6 +13,7 @@ const { registration } = require("./registration");
 const { current } = require("./current");
 const { logout } = require("./logout");
 const { confirmEmail } = require("./confirm");
+const { addOrder } = require("./addOrder");
 
 
 module.exports = {
@@ -21,6 +22,8 @@ module.exports = {
   current: controllerWrapper(current),
   logout: controllerWrapper(logout),
   confirm: controllerWrapper(confirmEmail),
+
+  addOrder: controllerWrapper(addOrder),
 
   getRods: controllerWrapper(getRods),
   getOneRod: controllerWrapper(getOneRod),

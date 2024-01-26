@@ -1,5 +1,5 @@
 const current = async (req, res) => {
-    const { userName, email, portrait, favorites } = req.user;
+    const { firstName, lastName, email, phone, orderSum} = req.user;
     res.json({
         firstName,
         lastName,
