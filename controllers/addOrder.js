@@ -1,4 +1,4 @@
-const { nanoid } = require("nanoid");
+
 const { Order } = require("../models/order");
 const { orderMail, orderManagerMail } = require("../nodemailer");
 
