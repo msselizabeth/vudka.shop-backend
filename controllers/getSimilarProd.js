@@ -1,5 +1,6 @@
 const { Reel } = require("../models/reel");
 const { Rod } = require("../models/rod");
+const { Silicone } = require("../models/silicone");
 
 const getSameRods = async (req, res) => {
     const { query } = req.query;
@@ -13,7 +14,14 @@ const getSameReels = async (req, res) => {
   res.json(products);
 }
 
+const getSameSilicones = async (req, res) => {
+  const { query } = req.query;
+  const products = await Silicone.find({ series: query });
+  res.json(products);
+};
+
 module.exports = {
   getSameRods,
-  getSameReels
+  getSameReels,
+  getSameSilicones
 };

@@ -5,7 +5,7 @@ const { getRods } = require("./getRods");
 const { getOneRod } = require("./getOneRod");
 const { getSilicones } = require("./getSilicones");
 const { getOneSilicone } = require("./getOneSilicone");
-const { getSameRods, getSameReels } = require("./getSimilarProd");
+const { getSameRods, getSameReels, getSameSilicones } = require("./getSimilarProd");
 const { getReels } = require("./getReels");
 const { getOneReel } = require("./getOneReel");
 const { login } = require("./login");
@@ -35,4 +35,5 @@ module.exports = {
 
   getSilicones: controllerWrapper(getSilicones),
   getOneSilicone: controllerWrapper(getOneSilicone),
+  getSameSilicones: controllerWrapper(getSameSilicones),
 };
