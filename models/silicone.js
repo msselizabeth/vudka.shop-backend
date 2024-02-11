@@ -2,8 +2,11 @@ const { Schema, model } = require("mongoose");
 
 const siliconeSchema = new Schema({
   _id: Schema.Types.ObjectId,
+  render: Boolean,
   purpose: String,
   price: String,
+  sale: Boolean,
+  salePriceMain: String,
   stock: Boolean,
   description: [
     {

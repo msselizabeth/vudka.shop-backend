@@ -2,9 +2,13 @@ const { Schema, model } = require("mongoose");
 
 const reelSchema = new Schema({
   _id: Schema.Types.ObjectId,
+  render: Boolean,
   purpose: String,
   price: String,
   stock: Boolean,
+  sale: Boolean,
+  salePriceMain: String,
+  code: String,
   description: [
     {
       text: String,

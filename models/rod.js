@@ -2,9 +2,13 @@ const { Schema, model } = require("mongoose");
 
 const rodSchema = new Schema({
   _id: Schema.Types.ObjectId,
+  render: Boolean,
   purpose: String,
   price: String,
   stock: Boolean,
+  sale: Boolean,
+  salePriceMain: String,
+  code: String,
   description: [
     {
       text: String,
@@ -24,7 +28,7 @@ const rodSchema = new Schema({
   weight: String,
   action: String,
   rodClass: String,
-    design: String,
+  design: String,
   section: String,
   guideType: String,
   country: String,

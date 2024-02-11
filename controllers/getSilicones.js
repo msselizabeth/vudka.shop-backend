@@ -9,7 +9,10 @@ const getSilicones = async (req, res) => {
   const silicones = await Silicone.find({}, "", { skip, limit });
   const result = silicones.map((silicone) => ({
     _id: silicone._id,
+    render: silicone.render,
     price: silicone.price,
+    sale: silicone.sale,
+    salePriceMain: silicone.salePriceMain,
     stock: silicone.stock,
     name: silicone.name,
     brand: silicone.brand,

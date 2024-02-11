@@ -9,6 +9,9 @@ const getRods = async (req, res) => {
   const rods = await Rod.find({ purpose: query }, "", { skip, limit });
   const result = rods.map((rod) => ({
     _id: rod._id,
+    render: rod.render,
+    sale: rod.sale,
+    salePriceMain: rod.salePriceMain,
     purpose: rod.purpose,
     typerods: rod.typerods,
     price: rod.price,
