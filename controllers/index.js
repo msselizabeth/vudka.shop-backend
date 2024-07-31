@@ -16,9 +16,20 @@ const { confirmEmail } = require("./confirm");
 const { addOrder } = require("./addOrder");
 const { getHooks } = require("./getHooks");
 const { getOneHook } = require("./getOneHook");
+const { getLines } = require("./getLines");
+const { adminRegistration } = require("./adminRegistration");
+const { adminLogin } = require("./adminLogin");
+const { adminCurrent } = require("./adminCurrent");
+const { adminLogout } = require("./adminLogout");
 
 
 module.exports = {
+  adminRegistration: controllerWrapper(adminRegistration),
+  adminLogin: controllerWrapper(adminLogin),
+  adminCurrent: controllerWrapper(adminCurrent),
+  adminLogout: controllerWrapper(adminLogout),
+
+
   login: controllerWrapper(login),
   registration: controllerWrapper(registration),
   current: controllerWrapper(current),
@@ -41,5 +52,7 @@ module.exports = {
 
   getHooks: controllerWrapper(getHooks),
   getOneHook: controllerWrapper(getOneHook),
-  getSameHooks: controllerWrapper(getSameHooks)
+  getSameHooks: controllerWrapper(getSameHooks),
+
+  getLines: controllerWrapper(getLines),
 };
