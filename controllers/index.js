@@ -24,12 +24,14 @@ const { adminLogout } = require("./adminLogout");
 const { addExchange } = require("./exchange/addExchange");
 const { updateExchange } = require("./exchange/updateExchange");
 const { getExchange } = require("./exchange/getExchange");
+const promotionMode = require("./exchange/promotionMode");
 
 
 module.exports = {
   addExchange: controllerWrapper(addExchange),
   updateExchange: controllerWrapper(updateExchange),
   getExchange: controllerWrapper(getExchange),
+  promotionMode: controllerWrapper(promotionMode),
 
   adminRegistration: controllerWrapper(adminRegistration),
   adminLogin: controllerWrapper(adminLogin),

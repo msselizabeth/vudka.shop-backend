@@ -33,6 +33,12 @@ const reelSchema = new Schema({
   country: String,
   img: [String],
   alt: String,
+  promotion: {
+    type: Boolean,
+      default: false,
+    },
+  promotionStartDate: Date, // Дата начала акции
+  promotionEndDate: Date,
 });
 
 const Reel = model("reel", reelSchema);

@@ -1,6 +1,6 @@
 const { required } = require("joi");
 const { Schema, model } = require("mongoose");
-const Joi = require('joi');
+const Joi = require("joi");
 
 const rodSchema = new Schema({
   render: {
@@ -20,18 +20,26 @@ const rodSchema = new Schema({
     required: true,
   },
   promotion: {
-  type: Boolean,
+    type: Boolean,
     default: false,
+  },
+  promotionStartDate: {
+    type: Date,
+    default: null,
+  },
+  promotionEndDate: {
+    type: Date,
+    default: null,
+  },
+  discount: {
+    type: String,
+    default: "",
   },
   sale: {
     type: Boolean,
     default: false,
   },
   salePriceMain: {
-    type: String,
-    default: "",
-  },
-  salePrice: {
     type: String,
     default: "",
   },
@@ -43,7 +51,7 @@ const rodSchema = new Schema({
     {
       text: {
         type: String,
-        default: "Опис для товару тимчасово відсутній"
+        default: "Опис для товару тимчасово відсутній",
       },
     },
   ],
@@ -126,7 +134,6 @@ const rodSchema = new Schema({
   },
 });
 
-
 const addRodJoiSchema = Joi.object({
   render: Joi.boolean().required(),
   purpose: Joi.string().required(),
@@ -135,11 +142,11 @@ const addRodJoiSchema = Joi.object({
   sale: Joi.boolean().default(false),
   promotion: Joi.boolean().default(false),
   salePriceMain: Joi.string().default(""),
-  salePrice: Joi.string().default(""),
+  dicount: Joi.string().default(""),
   code: Joi.string().default(""),
   description: Joi.array().items(
     Joi.object({
-      text: Joi.string().default("Опис для товару тимчасово відсутній")
+      text: Joi.string().default("Опис для товару тимчасово відсутній"),
     })
   ),
   typerods: Joi.string().required(),
@@ -161,9 +168,10 @@ const addRodJoiSchema = Joi.object({
   guideType: Joi.string().default(""),
   country: Joi.string().default(""),
   img: Joi.array().items(Joi.string()),
-  alt: Joi.string().required()
+  alt: Joi.string().required(),
+  promotionStartDate: Joi.date().default(null),
+  promotionEndDate: Joi.date().default(null),
 });
-
 
 const Rod = model("rod", rodSchema);
 
