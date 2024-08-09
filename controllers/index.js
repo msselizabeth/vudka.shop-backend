@@ -21,9 +21,16 @@ const { adminRegistration } = require("./adminRegistration");
 const { adminLogin } = require("./adminLogin");
 const { adminCurrent } = require("./adminCurrent");
 const { adminLogout } = require("./adminLogout");
+const { addExchange } = require("./exchange/addExchange");
+const { updateExchange } = require("./exchange/updateExchange");
+const { getExchange } = require("./exchange/getExchange");
 
 
 module.exports = {
+  addExchange: controllerWrapper(addExchange),
+  updateExchange: controllerWrapper(updateExchange),
+  getExchange: controllerWrapper(getExchange),
+
   adminRegistration: controllerWrapper(adminRegistration),
   adminLogin: controllerWrapper(adminLogin),
   adminCurrent: controllerWrapper(adminCurrent),

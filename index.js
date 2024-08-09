@@ -17,7 +17,9 @@ const rigsleadersRouter = require("./routes/api/rigsleaders");
 const jigheadsRouter = require("./routes/api/jigheads");
 const leadsfeedersRouter = require("./routes/api/leadsfeeders");
 
+const exchangeRouter = require("./routes/api/exchange");
 const adminAuthRouter = require("./routes/api/adminAuth");
+const adminRodsRouter = require("./routes/api/adminRods");
 
 
 dotenv.config();
@@ -26,7 +28,9 @@ const app = express();
 
 app.use(cors());
 
+app.use("/api/exchange", exchangeRouter);
 app.use("/api/admin-auth", adminAuthRouter);
+app.use("/api/admin-rods", adminRodsRouter);
 // app.use(express.json());
 app.use("/api/auth", authRouter);
 app.use("/api/cart", cartRouter);
