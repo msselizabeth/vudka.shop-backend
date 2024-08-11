@@ -7,7 +7,7 @@ const getRods = async (req, res) => {
     const { page = 1, limit = 3, search = '' } = req.query;
 
     // Создаем регулярное выражение для поиска без учета регистра
-    const searchRegex = new RegExp(search, 'i');
+    const searchRegex = new RegExp(search.replace(/\s+/g, ''), 'i');
 
     const searchCriteria = {
         $or: [
@@ -15,7 +15,22 @@ const getRods = async (req, res) => {
           { brand: searchRegex },
           { series: searchRegex },
           { model: searchRegex },
-          { item: searchRegex }
+        { item: searchRegex },
+        {
+          $expr: {
+            $regexMatch: {
+              input: {
+                $replaceAll: {
+                  input: { $concat: ['$name', '$brand', '$series', '$model'] },
+                  find: ' ',
+                  replacement: '',
+                },
+              },
+              regex: searchRegex,
+            },
+          },
+        },
+          
         ]
       };
 
