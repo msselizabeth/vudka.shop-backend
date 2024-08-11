@@ -11,12 +11,12 @@ const rodSchema = new Schema({
     type: String,
     required: true,
   },
-  priceMain: {
+  price: {
     type: String,
     required: true,
   },
   stock: {
-    type: Boolean,
+    type: Number,
     required: true,
   },
   promotion: {
