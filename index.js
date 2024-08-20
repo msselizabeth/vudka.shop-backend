@@ -20,6 +20,8 @@ const leadsfeedersRouter = require("./routes/api/leadsfeeders");
 const exchangeRouter = require("./routes/api/exchange");
 const adminAuthRouter = require("./routes/api/adminAuth");
 const adminRodsRouter = require("./routes/api/adminRods");
+const stockEntryRouter = require("./routes/api/stockEntry");
+const productsRouter = require("./routes/api/products");
 
 
 dotenv.config();
@@ -31,6 +33,8 @@ app.use(cors());
 app.use("/api/exchange", exchangeRouter);
 app.use("/api/admin-auth", adminAuthRouter);
 app.use("/api/admin-rods", adminRodsRouter);
+app.use("/api/stock-entry", stockEntryRouter);
+app.use("/api/products", productsRouter);
 // app.use(express.json());
 app.use("/api/auth", authRouter);
 app.use("/api/cart", cartRouter);

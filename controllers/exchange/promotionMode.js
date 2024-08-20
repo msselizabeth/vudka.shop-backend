@@ -9,7 +9,7 @@ const collectionsMap = {
 
 // Контроллер для управления полем promotion и датами во всех коллекциях
 const promotionMode = async (req, res) => {
-    const { enablePromotion, startDate, endDate, collection, discount } = req.body;
+    const { enablePromotion, startDate, endDate, collection } = req.body;
 
     if (!collectionsMap[collection]) {
       return res.status(400).send('Invalid collection specified.');
@@ -29,7 +29,6 @@ const promotionMode = async (req, res) => {
     const Collection = collectionsMap[collection];
     const updateData = {
         promotion: enablePromotion,
-        discount,
     };
 
     // Устанавливаем даты только если включаем акцию

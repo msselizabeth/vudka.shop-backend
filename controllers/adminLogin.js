@@ -22,7 +22,7 @@ const adminLogin = async (req, res) => {
      const payload = {
         id: admin._id,
       }
-  const token = jwt.sign(payload, SECRET_KEY);
+  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '23h' });
   await Admin.findByIdAndUpdate(admin._id, { token });
     
   res.json({
