@@ -2,86 +2,93 @@ const { HttpError } = require("../../helpers");
 const { Reel } = require("../../models/reel");
 const { Rod } = require("../../models/rod");
 const cron = require('node-cron');
+const moment = require('moment-timezone');
 
 const collectionsMap = {
-  Rod, Reel, 
+  Rod, Reel
 };
 
-// Контроллер для управления полем promotion и датами во всех коллекциях
+
+// Контроллер для управления акцией
 const promotionMode = async (req, res) => {
   const { startDate, endDate, collection } = req.body;
 
+  // Проверка на существование коллекции
   if (!collectionsMap[collection]) {
-    return res.status(400).send('Invalid collection specified.');
+    throw HttpError(400, 'Invalid collection specified.')
   }
 
+  // Проверка на валидность дат
   if (!startDate || !endDate || isNaN(Date.parse(startDate)) || isNaN(Date.parse(endDate))) {
-    return res.status(400).send('Invalid request: startDate and endDate must be valid dates.');
+    throw HttpError(400, 'Invalid request: startDate and endDate must be valid dates.')
   }
 
-  const now = new Date();
-  const startDateTime = new Date(startDate);
-  const endDateTime = new Date(endDate);
+  // Преобразуем даты
+  const startDateTimeUTC = moment.tz(startDate, 'UTC').startOf('day').toDate();
+  const endDateTimeUTC = moment.tz(endDate, 'UTC').endOf('day').toDate();
 
+  // Данные для обновления
   const updateData = {
-    promotionStartDate: startDateTime,
-    promotionEndDate: endDateTime,
+    promotionStartDate: startDateTimeUTC,
+    promotionEndDate: endDateTimeUTC,
+    promotion: false // Акция будет активирована cron-задачей
   };
 
-  // Если startDate совпадает с сегодняшним днем, активируем акцию сразу
-  if (startDateTime <= now && endDateTime > now) {
-    updateData.promotion = true;
-  } else {
-    updateData.promotion = false;
-  }
-
   const Collection = collectionsMap[collection];
-  await Collection.updateMany(
-    { sale: false }, // условие: товар не на распродаже
-    { $set: updateData } // обновляем promotion и даты
-  );
 
-  res.status(200).json({
-    message: `Promotion dates set successfully. Promotion ${updateData.promotion ? 'started' : 'will start on the specified start date.'}`,
-  });
+    await Collection.updateMany(
+      { sale: false }, //товар не участвует в распродаже
+      { $set: updateData }
+    );
+
+    res.status(200).json({
+      message: 'Promotion dates set successfully. Promotion will start and end on specified dates.'
+    });
+  
 };
 
-
-// Задание на проверку начала акций в стартовую дату
-cron.schedule('0 0 * * *', async () => {
+// Cron-задача для активации акций в нужную дату
+cron.schedule('* * * * *', async () => {
   try {
-    const now = new Date();
-    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const nowUTC = moment().tz('UTC').startOf('day').toDate();
+  
 
     for (const [collectionName, Collection] of Object.entries(collectionsMap)) {
-      await Collection.updateMany(
-        { promotion: false, promotionStartDate: startOfDay },
+      const result = await Collection.updateMany(
+        {
+          promotion: false,
+          promotionStartDate: { $lte: nowUTC },
+          promotionEndDate: { $gte: nowUTC }
+        },
         { $set: { promotion: true } }
       );
-    }
 
-    console.log('Checked and started promotions based on start dates.');
+      console.log(`Activated promotions in ${collectionName}:`, result.modifiedCount);
+    }
   } catch (error) {
-    console.error('Error checking and starting promotions:', error);
+    console.error('Error in promotion activation cron job:', error);
   }
 });
 
-// Задание на проверку окончания акций
-cron.schedule('0 0 * * *', async () => {
+// Cron-задача для деактивации акций после окончания
+cron.schedule('* * * * *', async () => {
   try {
-    const now = new Date();
-    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const nowUTC = moment().tz('UTC').endOf('day').toDate();
+    console.log(nowUTC);
 
     for (const [collectionName, Collection] of Object.entries(collectionsMap)) {
-      await Collection.updateMany(
-        { promotion: true, promotionEndDate: { $lte: startOfDay } },
+      const result = await Collection.updateMany(
+        {
+          promotion: true,
+          promotionEndDate: { $lt: nowUTC }
+        },
         { $set: { promotion: false, promotionEndDate: null, promotionStartDate: null } }
       );
-    }
 
-    console.log('Checked and updated promotions based on end dates.');
+      console.log(`Deactivated promotions in ${collectionName}:`, result.modifiedCount);
+    }
   } catch (error) {
-    console.error('Error checking and updating promotions:', error);
+    console.error('Error in promotion deactivation cron job:', error);
   }
 });
 
