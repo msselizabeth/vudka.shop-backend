@@ -7,8 +7,7 @@ const jsonParse = express.json();
 
 
 router.get("/", ctrl.getProductsByCollection);
-
-
+router.delete("/:collectionName/:productId", ctrl.deleteProductsByCollection)
 
 
 module.exports = router;
