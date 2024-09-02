@@ -63,7 +63,6 @@ cron.schedule('* * * * *', async () => {
         { $set: { promotion: true } }
       );
 
-      console.log(`Activated promotions in ${collectionName}:`, result.modifiedCount);
     }
   } catch (error) {
     console.error('Error in promotion activation cron job:', error);
@@ -74,7 +73,6 @@ cron.schedule('* * * * *', async () => {
 cron.schedule('* * * * *', async () => {
   try {
     const nowUTC = moment().tz('UTC').endOf('day').toDate();
-    console.log(nowUTC);
 
     for (const [collectionName, Collection] of Object.entries(collectionsMap)) {
       const result = await Collection.updateMany(
@@ -85,7 +83,6 @@ cron.schedule('* * * * *', async () => {
         { $set: { promotion: false, promotionEndDate: null, promotionStartDate: null } }
       );
 
-      console.log(`Deactivated promotions in ${collectionName}:`, result.modifiedCount);
     }
   } catch (error) {
     console.error('Error in promotion deactivation cron job:', error);
