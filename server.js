@@ -1,10 +1,12 @@
 const app = require("./index");
 const mongoose = require("mongoose");
+const { initializeModels } = require("./hand-data/models")
 
 const { DB_HOST, PORT } = process.env;
 
 mongoose.connect(DB_HOST)
-    .then(() => {
+    .then(async () => {
+        // await initializeModels();
         app.listen(PORT)
         console.log("Connect success")
     })
