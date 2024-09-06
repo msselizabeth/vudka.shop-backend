@@ -6,7 +6,7 @@ const jsonParse = express.json();
 
 
 
-router.get("/", ctrl.getProductsByCollection);
+router.get("/:collectionName", ctrl.getProductsByCollection);
 router.delete("/:collectionName/:productId", ctrl.deleteProductsByCollection)
 
 

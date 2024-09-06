@@ -1,10 +1,10 @@
-const models = require("../hand-data/models");
+const {models} = require("../hand-data/models");
+const { HttpError } = require("../helpers");
 
 const getProductsByCollection = async (req, res) => {
-  const { collectionName, search = "" } = req.query;
-    const searchRegex = new RegExp(search.replace(/\s+/g, ""), "i");
-    
-    console.log(collectionName)
+  const { page = 1, limit = 3, search = "" } = req.query;
+  const { collectionName } = req.params;
+  const searchRegex = new RegExp(search.replace(/\s+/g, ""), "i");
 
   const searchCriteria = {
     $or: [
@@ -32,15 +32,27 @@ const getProductsByCollection = async (req, res) => {
   };
 
   // Проверка на наличие модели для указанной коллекции
-  if (!models[collectionName]) {
-    return res
-      .status(400)
-      .json({ error: `Invalid collection name: ${collectionName}` });
-  }
+  if (!models[collectionName])
+    throw HttpError(400, `Invalid collection name: ${collectionName}`);
 
-  const products = await models[collectionName].find(searchCriteria);
+  const products = await models[collectionName]
+    .find(searchCriteria)
+    .skip((page - 1) * limit)
+    .limit(Number(limit));
 
-  res.status(200).json({ products });
+  const totalProducts = await models[collectionName].countDocuments(
+    searchCriteria
+  );
+
+  res
+    .status(200)
+    .json({
+      success: true,
+      products: products,
+      currentPage: page,
+      totalPages: Math.ceil(totalProducts / limit),
+      totalProducts,
+    });
 };
 
 module.exports = { getProductsByCollection };
